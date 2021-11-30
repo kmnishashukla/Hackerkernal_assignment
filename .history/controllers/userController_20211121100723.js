@@ -1,0 +1,1 @@
+const {User, Tag, Image ,userTag, sequelize} = require("../models");

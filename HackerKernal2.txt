@@ -1,0 +1,336 @@
+HackerKeranl Assignment
+#############
+Note:Below api used for Express Handlebars for learn
+https://www.youtube.com/watch?v=1aXZQcG2Y6I
+>>npm init 
+>>npm i express cors nodemon
+>>npm i body-parser (used for create body raw data)
+>>npm i bcrypt
+>>npm i dotenv
+>>npm install --save sequelize
+>>npm i sequelize-cli
+>>npm install --save sequelize-cli
+>>npx sequelize-cli init (used for create config , models,node_modues,seeders file)
+>>npm i mysql
+>>npm install mysql2 --save
+>>npx sequelize-cli model:generate  --name User --attributes name:string,password:string
+,email:string
+>>npx sequelize-cli model:generate  --name Tag --attributes name:string
+>>>>npx sequelize-cli model:generate  --name userTag --attributes userId:string
+>>>>npx sequelize-cli model:generate  --name Post --attributes userId:string
+>>>>npx sequelize-cli model:generate  --name Image --attributes userId:string
+>>npx sequelize-cli db:migrate
+>>npm i jsonwebtoken
+>>npm i express-jwt
+>>npm install --save multer
+>>npm i cookie-parser
+>>npm i express-validator
+
+######
+user model####
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  };
+  User.init({
+    name: {
+      type: DataTypes.STRING(30),
+      allowNull: false,
+    },
+    email:{
+       type: DataTypes.STRING(30),
+       unique:true,
+       allowNull: false
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull:false
+    },
+    time:{
+      type: DataTypes.DATE,
+      default: Date.now
+    }
+  }, {
+    sequelize,
+    modelName: 'User',
+    underscored: true
+  });
+  return User;
+};
+#######Tag model######
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Tag extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  };
+  Tag.init({
+      type: DataTypes.STRING(30),
+      allowNull: false,
+  }, {
+    sequelize,
+    modelName: 'Tag',
+  });
+  return Tag;
+};
+#######################userTag################
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class userTag extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  };
+  userTag.init({
+    userId: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+    },
+    tagId: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+    }
+  }, {
+    sequelize,
+    modelName: 'userTag',
+  });
+  return userTag;
+};
+####################################################
+http://localhost:3000/api/signIn
+
+{
+    "name":"nisha",
+    "email":"nisha12@gmail.com",
+	
+	"password":"123"
+}
+#######
+{
+    "name":"Ashu",
+    "email":"as@gmail.com",
+	
+	"password":"123",
+    "tags_id":[1,2]
+
+}
+######
+{
+    "success": true,
+    "message": "User created successfully.",
+    "user": {
+        "id": 16,
+        "name": "Ashu",
+        "email": "as@gmail.com",
+        "password": "123",
+        "updatedAt": "2021-11-19T02:53:58.519Z",
+        "createdAt": "2021-11-19T02:53:58.519Z"
+    },
+    "tags": [
+        {
+            "id": 1,
+            "userId": 16,
+            "tagId": 1,
+            "updatedAt": "2021-11-19T02:53:58.592Z",
+            "createdAt": "2021-11-19T02:53:58.592Z"
+        },
+        {
+            "id": 2,
+            "userId": 16,
+            "tagId": 2,
+            "updatedAt": "2021-11-19T02:53:58.606Z",
+            "createdAt": "2021-11-19T02:53:58.606Z"
+        }
+    ]
+}
+########
+{
+    "name":"Satya",
+    "email":"satya@gmail.com",
+	
+	"password":"123",
+    "tags_id":[1,2]
+
+}
+######
+{
+    "success": true,
+    "message": "User created successfully.",
+    "user": {
+        "id": 17,
+        "name": "Satya",
+        "email": "satya@gmail.com",
+        "password": "$2b$10$UjeB79WWNKFvOTGQZmRjLux762m3SpVFn0Yc9vVxT.UMt0CoHdd9O",
+        "updatedAt": "2021-11-19T03:03:07.833Z",
+        "createdAt": "2021-11-19T03:03:07.833Z"
+    },
+    "tags": [
+        {
+            "id": 3,
+            "userId": 17,
+            "tagId": 1,
+            "updatedAt": "2021-11-19T03:03:07.883Z",
+            "createdAt": "2021-11-19T03:03:07.883Z"
+        },
+        {
+            "id": 4,
+            "userId": 17,
+            "tagId": 2,
+            "updatedAt": "2021-11-19T03:03:07.895Z",
+            "createdAt": "2021-11-19T03:03:07.895Z"
+        }
+    ]
+}
+#####
+{
+    "name":"Mahi",
+    "email":"mahi@gmail.com",
+	
+	"password":"123",
+    "tags_id":[1,2,3]
+
+}
+#########
+{
+    "success": true,
+    "message": "User created successfully.",
+    "user": {
+        "id": 18,
+        "name": "Mahi",
+        "email": "mahi@gmail.com",
+        "password": "$2b$10$5KZaJ./o0EyWm7qJXNpctOZNU9es7vW5TgsvR/iKAD84k3YABfxl6",
+        "updatedAt": "2021-11-19T03:08:43.222Z",
+        "createdAt": "2021-11-19T03:08:43.222Z"
+    },
+    "tags": [
+        {
+            "id": 5,
+            "userId": 18,
+            "tagId": 1,
+            "updatedAt": "2021-11-19T03:08:43.244Z",
+            "createdAt": "2021-11-19T03:08:43.244Z"
+        },
+        {
+            "id": 6,
+            "userId": 18,
+            "tagId": 2,
+            "updatedAt": "2021-11-19T03:08:43.249Z",
+            "createdAt": "2021-11-19T03:08:43.249Z"
+        },
+        {
+            "id": 7,
+            "userId": 18,
+            "tagId": 3,
+            "updatedAt": "2021-11-19T03:08:43.251Z",
+            "createdAt": "2021-11-19T03:08:43.251Z"
+        }
+    ]
+}
+
+############################################################
+user data
+{
+  "email":"nis@gmail.com",
+   "password":"123"
+}
+####
+{
+    "success": true,
+    "message": "User created successfully.",
+    "user": {
+        "id": 12,
+        "name": "nisha",
+        "email": "nisha@gmail.com",
+        "password": "$2b$10$3HXyWJJFy7EmWcJ5pzeaAONSfiGUzZB6MeVwFWpXqSnkOMWT/fs8O",
+        "updatedAt": "2021-11-20T03:40:43.198Z",
+        "createdAt": "2021-11-20T03:40:43.198Z"
+    },
+    "tags": [
+        {
+            "id": 12,
+            "userId": 12,
+            "tagId": "2",
+            "updatedAt": "2021-11-20T03:40:43.203Z",
+            "createdAt": "2021-11-20T03:40:43.203Z"
+        }
+    ],
+    "image": {
+        "src": "http://localhost:3000/uploads\\1637379643077.png",
+        "id": 6,
+        "image_type": "profile_image",
+        "title": "Screenshot (5).png",
+        "mime_type": "image/png",
+        "imageable_type": "User",
+        "imageable_id": 12,
+        "updatedAt": "2021-11-20T03:40:43.325Z",
+        "createdAt": "2021-11-20T03:40:43.325Z"
+    }
+}
+################################################################
+Note : used for search query
+https://stackabuse.com/using-sequelize-orm-with-nodejs-and-express/
+###################Note used for other blog api########
+https://www.codementor.io/@mirko0/how-to-use-sequelize-with-node-and-express-i24l67cuz
+#############################Todoapp###########
+https://www.digitalocean.com/community/tutorials/getting-started-with-node-express-and-postgres-using-sequelize
+###############
+Note: used for timestamp: false
+https://stackoverflow.com/questions/50977198/is-there-a-way-to-disable-timestamp-columns-globally-for-all-models/50980193
+##########
+http://localhost:3000/api/user
+{
+    "name":"nisha",
+    "email":"ns@gmail.com",
+    "password":"123",
+    "tagsId:[1,2]
+}
+#######
+{
+    "name":"nisha",
+    "email":"nisha@gmail.com",
+    "password":"123"
+}
+#####
+{
+   "name":"nisha",
+    "email":"ns12@gmail.com",
+    "password":"123",
+    "tagsId":[1,2]
+}
+###############
+http://localhost:3000/api/signIn
+{
+    
+    "email":"ns@gmail.com",
+    "password":"123"
+}
+#################
+
